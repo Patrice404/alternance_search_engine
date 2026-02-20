@@ -1,0 +1,195 @@
+{
+  "profil": {
+    "nom": "Patrice COTCHO",
+    "titre": "Alternant Administrateur Systèmes et Réseaux",
+    "ecole": "INSA Centre Val de Loire",
+    "recherche": "Alternance de 24 mois en infrastructure IT / Cybersécurité"
+  },
+  "experiences_pro": [
+    {
+      "id": 1,
+      "poste": "Consultant junior en cybersécurité",
+      "entreprise": "Grafnet Sarl",
+      "lieu": "Bénin",
+      "periode": "09/2022 - 04/2023",
+      "missions": [
+        "Déploiement et configuration de firewalls pour la sécurisation d'infrastructures réseau.",
+        "Analyse et amélioration de l'architecture du réseau wifi universitaire RBER (segmentation, filtrage, redondance).",
+        "Sensibilisation et formation sur les bonnes pratiques en cybersécurité via des simulations d'attaques.",
+        "Participation à des missions d'audit de systèmes d'information.",
+        "Participation à des projets IT orientés infrastructure et cybersécurité."
+      ]
+    },
+    {
+      "id": 2,
+      "poste": "Support Informatique N1/N2",
+      "entreprise": "Ministère des Affaires Étrangères",
+      "periode": "10/2021 - 12/2021",
+      "lieu": "Bénin",
+      "missions": [
+        "Support informatique utilisateurs N1/N2 sur postes de travail Windows dans un environnement de plus 100 utilisateurs.",
+        "Traitement des incidents et demandes utilisateurs.",
+        "Déploiement et sécurisation de nouveaux postes (durcissement d'OS, antivirus).",
+        "Assistance, accompagnement et formation des utilisateurs aux outils et solutions informatiques de l'entreprise."
+      ]
+    },
+    {
+      "id": 3,
+      "poste": "Responsable de projet informatique",
+      "entreprise": "APDP",
+      "periode": "03/2021 - 06/2021",
+      "lieu": "Bénin",
+      "missions": [
+        "Déployement et configuration de la solution de monitoring EyesOfNetwork.",
+        "Surveillance de la disponibilité des services informatiques.",
+        "Garantie de la disponibilité des services réseaux et assistance technique.",
+        "Rédaction de documentation et procédures d’exploitation IT."
+      ]
+    }
+  ],
+  "realisations_techniques": [
+    {
+      "id": 1,
+      "titre": "SIEM & XDR : Proof of Concept Wazuh",
+      "tags": ["AD", "Wazuh", "Cybersecurity",  "Suricata"],
+      "description": "Déploiement d'une plateforme de sécurité unifiée dans un environnement hybride (Windows Server/Linux). Mise en œuvre de la détection d'intrusions, analyse de vulnérabilités et configuration de mécanismes de 'Réponse Active' pour le blocage automatique de menaces.",
+      "lien": "https://www.linkedin.com/in/patrice-cotcho-a6a0571b3/",
+      "image": "assets/img/wazuh.png",
+      "source": "LinkedIn"
+    },
+    {
+      "id": 2,
+      "titre": "Développement d'une Mini-GLIBC & Shell",
+      "tags": ["Langage C", "Appels Système", "Gestion Mémoire", "Processus UNIX"],
+      "description": "Ré-implémentation d'une bibliothèque système (malloc, printf, IO bufferisées) et création d'un Shell capable de gérer les processus (fork/wait), les variables d'environnement (export/getenv) et les redirections de flux (>>, 2>, 2>>).",      "lien": "https://github.com/Patrice404/Mini_Glibc",
+      "lien":"https://github.com/Patrice404/Mini_Glibc",
+      "image": "assets/img/mini_glibc.png",
+      "source": "Github"
+    },
+    {
+      "id": 3,
+      "titre": "MedievAIl BAIttle GenerAIl (Simulation AoE2)",
+      "tags": ["IA Tactique", "Python",  "Matplotlib", "RTS Engine"],
+      "description": "Développement d'un moteur de combat temps réel (RTS) inspiré d'Age of Empires II. Implémentation de généraux IA capables de micro-management, de formations de combat.",
+      "lien": "https://github.com/Patrice404/age_of_empire_ai_battle_simulation",
+      "image": "assets/img/battle_sim.png",
+      "source": "Github"
+    },
+    {
+      "id": 4,
+      "titre": "Jeu de Stratégie Tactique",
+      "tags": ["Java", "Design Patterns", "JUnit", "Ant", "Game Logic"],
+      "description": "Conception d'un moteur de jeu de combat au tour par tour sur grille 2D. Implémentation de mécaniques complexes, validation du code par tests unitaires (JUnit) et automatisation de build (Ant).",
+      "lien": "https://github.com/Patrice404/fightGame/",
+      "image": "assets/img/fightgame.png",
+      "source": "Github"
+    },
+    {
+      "id": 5,
+      "titre": "IA & Planification : Blocks World",
+      "tags": ["IA", "CSP", "Planification", "Java", "Data Mining"],
+      "description": "Conception d'un système intelligent pour résoudre le problème du 'Monde des Blocs'. Implémentation de solveurs de contraintes (CSP), d'algorithmes de planification (STRIPS, Heuristiques) et d'extraction de connaissances (Fouille de données/Règles d'association).",
+      "lien": "https://github.com/Patrice404/blocksword",
+      "image": "assets/img/blocksworld.png",
+      "source": "Github"
+    },
+    {
+      "id": 6,
+      "titre": "Générateur Procédural : L-Systèmes 2D/3D",
+      "tags": ["Java", "POO", "3D/2D", "Algorithmique", "Systèmes Stochastiques"],
+      "description": "Développement d'une application complète en Java pour la simulation de croissance biologique (L-Systèmes). Conception d'un interpréteur de règles de réécriture, moteur de rendu graphique hybride (2D/3D) et implémentation de modèles stochastiques pour générer des structures naturelles réalistes.",
+      "lien": "https://github.com/Patrice404/lsystem",
+      "image": "assets/img/lsystem.png",
+      "source": "Github"
+    }
+  ],
+  "competences": {
+    "cybersecurite": [
+        "Wazuh", "Splunk", "ELK",
+        "Suricata", "Snort", 
+        "Pentesting", 
+        "Audit de Vulnérabilités", 
+        "Réponse Active"
+    ],
+    "infrastructures_reseaux": [
+        "Active Directory (AD DS)", 
+        "Supervision (Centreon/Nagios/SNMP)", 
+        "Services Core (DNS/DHCP)", 
+        "VLAN & Segmentation", 
+        "Routage", "Wireshark"
+    ],
+    "developpement_scripting": [
+        "Python (Algorithmes/IA)", 
+        "Langage C (Programmation Système)", 
+        "Java", "Php", "SQL",
+        "Bash/Shell Scripting", 
+        "Git/GitHub"
+    ],
+    "systemes_virtualisation": [
+        "Linux (Debian/Ubuntu)", 
+        "Windows Server 2022",
+        "VMware & VirtualBox", 
+        "Gestion des Processus UNIX"
+    ]
+},
+  "parcours_detaille": "Passionné d'informatique en général, et plus particulièrement par les réseaux et la cybersécurité, je suis un profil polyvalent, impliqué et autonome. Mon aisance technique me permet d'évoluer efficacement aussi bien dans les opérations de Blue Team (défense et détection) que de Red Team (tests d'intrusion). Mes expériences professionnelles, mes formations et mon entraînement constant sur des plateformes comme TryHackMe et HackTheBox m'ont permis de forger une solide culture de la menace et de maîtriser les outils d'audit, de monitoring et d'administration réseau & système. Je suis aujourd'hui prêt à mettre cette expertise au service de la sécurisation des infrastructures critiques au sein d'une équipe dynamique.",
+  "certifications": [
+    {
+      "nom": "HTB CDSA (Training Completed)",
+      "date": "2026",
+      "entreprise": "Hack The Box"
+    },
+    {
+      "nom": "Networking Basics",
+      "date": "2025",
+      "entreprise": "Cisco Networking Academy"
+    },
+    {
+      "nom": "SecNumAcadémie",
+      "date": "2021",
+      "entreprise": "ANSSI"
+    },
+    {
+      "nom": "Advent of Cyber",
+      "date": "2021",
+      "entreprise": "TryHackMe"
+    }
+  ],
+ "passions": [
+    {
+      "nom": "Veille & Threat Intelligence",
+      "detail": "Passionné par l'actualité de la cybersécurité, le suivi des nouvelles vulnérabilités (CVE) et l'évolution des menaces mondiales."
+    },
+    {
+      "nom": "Musique",
+      "detail": "Un pilier quotidien qui m'aide à la concentration lors de mes sessions de déploiement ou de résolution de problèmes techniques."
+    },
+    {
+      "nom": "Vie Sociale & Échanges",
+      "detail": "J'attache une grande importance aux sorties entre amis, favorisant ainsi le partage d'idées et le maintien d'un bon équilibre personnel."
+    }
+  ],
+  "formations": [
+    {
+      "id": 1,
+      "diplome": "Diplôme d'ingénieur spécialité STI (Cybersécurité)",
+      "etablissement": "INSA Centre Val de Loire",
+      "lieu": "Bourges, France",
+      "periode": "2025 - 2028"
+    },
+    {
+      "id": 2,
+      "diplome": "Licence Informatique",
+      "etablissement": "Université de Caen Normandie",
+      "lieu": "Caen, France",
+      "periode": "2023 - 2025"
+    },
+    {
+      "id": 3,
+      "diplome": "Licence Sécurité Informatique",
+      "etablissement": "IFRI",
+      "lieu": "Bénin",
+      "periode": "2019 - 2022"
+    }
+  ]
+}
