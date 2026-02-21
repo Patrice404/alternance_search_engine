@@ -25,7 +25,7 @@ def get_full_description_wttj(driver, url):
         print("      [Erreur] Impossible de lire l'offre WTTJ.")
         return ""
 
-def search_wttj(driver, query="Cybersécurité", max_pages=2):
+def search_wttj(driver, query="Cybersécurité", max_pages=4):
     safe_query = urllib.parse.quote(query)
     offers = []
     

@@ -8,6 +8,8 @@ from utils.notifier import send_discord_alert
 # from utils.notifier import send_discord_alert  # Décommente quand tu seras prêt pour Discord
 
 DISCORD_WEBHOOK = "https://discordapp.com/api/webhooks/1474470385847242823/XJhFAhTXFE2VfrQQWeIDdOIKoO3-cbnIUKLuDgkTgwBRu7gCDkUq05LEb8OKGmPG7SFw" 
+SCHOOL_NAME = ["Livecampus","MyDigitalSchool","Ironhack"]
+LINKEDIN_QUERIES = ["Alternance Cybersécurité", "Alternance SOC", "Alternance Analyste Cybersécurité", "Alternance Pentest", "Alternance Système Réseau", "Alternance Sécurité Informatique", "Alternance SSI", "Alternance Sécurité des Systèmes d'Information", "Alternance Administrateur Système", "Alternance Administrateur Réseau", "Alternance Sécurité Offensive", "Alternance Sécurité Défensive", "Alternance Technicien Cybersécurité", "Alternance Consultant Cybersécurité", "Alternance Ingénieur Cybersécurité", "Alternance Ingénieur Sécurité", "Alternance SOC Analyst", "Alternance Cybersecurity Analyst", "Alternance Pentester", "Alternance Ethical Hacker", "Alternance Hacking", "Alternance Sécurité des Réseaux", "Alternance Sécurité des Systèmes", "Alternance Gouvernance de la Sécurité", "Alternance Risk Manager Cybersécurité", "Alternance Architecte Sécurité", "Alternance Expert Cybersécurité", "Alternance Responsable Sécurité", "Alternance RSSI"]
 
 def load_seen_jobs(filepath='data/seen_jobs.txt'):
     """Charge la liste des offres déjà vues."""
@@ -109,7 +111,10 @@ def main():
                 continue  # Ignorer les offres déjà vues
             score, _ = calculate_match_score(offer, pure_keywords)
             if score >= 20: 
-                print(f"   [Deep Scan] Analyse de : {offer['title'][:40]}...")
+                if offer['company'] in SCHOOL_NAME:
+                        print(f"   [Filtre] Écarté (Entreprise écartée) : {offer['title']} chez {offer['company']}")
+                        continue
+                print(f"   [Deep Scan] Analyse de : {offer['title'][:60]}...")
                 full_text = get_full_description(driver, offer['link'])
                 offer['description'] = full_text
                 
@@ -137,6 +142,9 @@ def main():
             final_score, final_keywords = calculate_match_score(offer, pure_keywords)
             
             if final_score >= 30:
+                if offer['company'] in SCHOOL_NAME:
+                        print(f"   [Filtre] Écarté (Entreprise écartée) : {offer['title']} chez {offer['company']}")
+                        continue
                 matches_count += 1
                 print(f"\n🔥 SUPER MATCH LBA ({final_score} pts) : {offer['title']}")
                 print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
@@ -151,34 +159,39 @@ def main():
         # ------------------------------------------------
         print("\n▶️ PLATEFORME 3 : LINKEDIN")
         # On peut rajouter "Alternance" et "Cybersécurité" séparés pour que le moteur interne de LinkedIn soit plus précis
-        linkedin_offers = search_linkedin(driver, "Alternance Cybersécurité")
-        
-        for offer in linkedin_offers:
-            if offer['link'] in seen_jobs:
-                continue  # Ignorer les offres déjà vues
-            # 1er check de base
-            score, _ = calculate_match_score(offer, pure_keywords)
+        for query in LINKEDIN_QUERIES:
+            print(f"   └── 🌐 Recherche LinkedIn : {query}")
+            linkedin_offers = search_linkedin(driver, query)
             
-            if score >= 20: 
-                print(f"   [Deep Scan] Analyse de : {offer['title'][:40]}... chez {offer['company']}")
+            for offer in linkedin_offers:
+                if offer['link'] in seen_jobs:
+                    continue  # Ignorer les offres déjà vues
+                # 1er check de base
+                score, _ = calculate_match_score(offer, pure_keywords)
                 
-                # Deep Scan spécifique à LinkedIn
-                full_text = get_full_description_linkedin(driver, offer['link'])
-                offer['description'] = full_text
-                
-                final_score, final_keywords = calculate_match_score(offer, pure_keywords)
-                #print(f"   └── Résultat : {final_score} pts | {len(final_keywords)} compétences trouvées.")
-                print(f"   └── Résultat : {final_score} pts | {len(final_keywords)} compétences trouvées (Texte lu : {len(full_text)} caractères).")
-                
-                if final_score >= 30: 
-                    matches_count += 1
-                    print(f"\n🔥 SUPER MATCH LINKEDIN ({final_score} pts) : {offer['title']}")
-                    print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
-                    print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
-                    print(f"   🔗 {offer['link']}\n")
-                    send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'])
-            save_seen_job(offer['link'])
-            seen_jobs.add(offer['link'])  
+                if score >= 20: 
+                    if offer['company'] in SCHOOL_NAME:
+                            print(f"   [Filtre] Écarté (Entreprise écartée) : {offer['title']} chez {offer['company']}")
+                            continue
+                    print(f"   [Deep Scan] Analyse de : {offer['title'][:60]}... chez {offer['company']}")
+                    
+                    # Deep Scan spécifique à LinkedIn
+                    full_text = get_full_description_linkedin(driver, offer['link'])
+                    offer['description'] = full_text
+                    
+                    final_score, final_keywords = calculate_match_score(offer, pure_keywords)
+                    #print(f"   └── Résultat : {final_score} pts | {len(final_keywords)} compétences trouvées.")
+                    print(f"   └── Résultat : {final_score} pts | {len(final_keywords)} compétences trouvées (Texte lu : {len(full_text)} caractères).")
+                    
+                    if final_score >= 30: 
+                        matches_count += 1
+                        print(f"\n🔥 SUPER MATCH LINKEDIN ({final_score} pts) : {offer['title']}")
+                        print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
+                        print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
+                        print(f"   🔗 {offer['link']}\n")
+                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'])
+                save_seen_job(offer['link'])
+                seen_jobs.add(offer['link'])  
         # ------------------------------------------------
         # 4. SCAN DE WELCOME TO THE JUNGLE
         # ------------------------------------------------
@@ -193,7 +206,10 @@ def main():
             score, _ = calculate_match_score(offer, pure_keywords)
             
             if score >= 20: 
-                print(f"   [Deep Scan] Analyse de : {offer['title'][:40]}... chez {offer['company']}")
+                if offer['company'] in SCHOOL_NAME:
+                        print(f"   [Filtre] Écarté (Entreprise écartée) : {offer['title']} chez {offer['company']}")
+                        continue
+                print(f"   [Deep Scan] Analyse de : {offer['title'][:60]}... chez {offer['company']}")
                 
                 # Deep Scan spécifique à WTTJ
                 full_text = get_full_description_wttj(driver, offer['link'])

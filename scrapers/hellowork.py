@@ -28,7 +28,7 @@ def get_full_description(driver, url):
         print(f"   [Erreur de lecture de l'offre] {url}")
         return ""
     
-def search_hellowork(driver, query="Alternance système réseau cybersécurité", date_filter="w", max_pages=3):
+def search_hellowork(driver, query="Alternance système réseau cybersécurité", date_filter="w", max_pages=4):
     """
     Scrape les offres HelloWork.
     - date_filter : "w" (semaine), "d" (3 jours), "m" (mois)
