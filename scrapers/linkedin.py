@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 import time
 import urllib.parse
+from settings import ALTERNANCE_KEYWORDS, LINKEDIN_MAX_SCROLLS
 
 def get_full_description_linkedin(driver, url):
     """Deep Scan spécifique pour LinkedIn - Version "Force Brute"."""
@@ -42,7 +43,7 @@ def get_full_description_linkedin(driver, url):
     except Exception as e:
         return ""
     
-def search_linkedin(driver, query="Alternance Cybersécurité", max_scrolls=4):
+def search_linkedin(driver, query="Alternance Cybersécurité", max_scrolls=LINKEDIN_MAX_SCROLLS):
     # Encodage de la recherche
     safe_query = urllib.parse.quote(query)
     # f_TPR=r604800 -> Filtre : Moins d'une semaine (7 jours = 604800 secondes)
@@ -77,10 +78,9 @@ def search_linkedin(driver, query="Alternance Cybersécurité", max_scrolls=4):
 
                 # NOUVEAU FILTRE STRICT : On vérifie que c'est bien une alternance
                 title_lower = title.lower()
-                alternance_keywords = ["alt","[alternance]","[alternant(e)]","[alternant]","alternant(e)","alternante","alternant","alternance", "apprenti", "apprentissage", "pro", "professionnalisation"]
                 
                 # Si AUCUN de ces mots n'est dans le titre, on jette l'offre directement
-                if not any(word in title_lower for word in alternance_keywords):
+                if not any(word in title_lower for word in ALTERNANCE_KEYWORDS):
                     print(f"   [Filtre] Écarté (Pas une alternance) : {title[:40]}...")
                     continue
                 

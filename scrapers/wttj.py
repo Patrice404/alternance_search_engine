@@ -1,6 +1,8 @@
 from selenium.webdriver.common.by import By
 import time
 import urllib.parse
+from settings import MAX_PAGES
+
 
 def get_full_description_wttj(driver, url):
     """Deep Scan spécifique pour Welcome to the Jungle."""
@@ -25,7 +27,7 @@ def get_full_description_wttj(driver, url):
         print("      [Erreur] Impossible de lire l'offre WTTJ.")
         return ""
 
-def search_wttj(driver, query="Cybersécurité", max_pages=4):
+def search_wttj(driver, query="Cybersécurité", max_pages=MAX_PAGES):
     safe_query = urllib.parse.quote(query)
     offers = []
     
