@@ -2,11 +2,13 @@ import json
 import os
 import re
 from scrapers.lba import search_lba
-from utils.notifier import send_discord_alert
+from utils.notifier import send_discord_alert, send_discord_report
 from scrapers.hellowork import init_browser, search_hellowork, get_full_description
 from scrapers.linkedin import search_linkedin, get_full_description_linkedin
 from scrapers.wttj import search_wttj, get_full_description_wttj
 from scrapers.apec import search_apec, get_full_description_apec
+from utils.stats_generator import generate_stats_graph
+
 from settings import DISCORD_WEBHOOK, SCHOOL_NAME, LINKEDIN_QUERIES, SUPER_MATCH_THRESHOLD, APEC_QUERIES, TARGET_TITLES, MATCH_TITLES_SCORE, WTTJ_QUERIES, HELLOWORK_QUERIES
 
 def extract_duration(text):
@@ -121,6 +123,15 @@ def main():
     pure_keywords = extract_pure_keywords(profile)
     matches_count = 0
     
+    # Avant le début des scans
+    bot_stats = {
+        "HelloWork": {"scannées": 0, "pertinentes": 0},
+        "LaBonneAlternance": {"scannées": 0, "pertinentes": 0},
+        "LinkedIn": {"scannées": 0, "pertinentes": 0},
+        "WTTJ": {"scannées": 0, "pertinentes": 0},
+        "APEC": {"scannées": 0, "pertinentes": 0}
+    }
+    
     # NOUVEAU : On charge la mémoire du bot
     seen_jobs = load_seen_jobs()
     print(f"🧠 Mémoire chargée : {len(seen_jobs)} offres déjà connues.")
@@ -140,13 +151,13 @@ def main():
         for query in HELLOWORK_QUERIES:
             print(f"   └── 🌐 Recherche HelloWork : {query}")
             hw_offers = search_hellowork(driver, query)
-            
+            bot_stats["HelloWork"]["scannées"] += len(hw_offers) 
             for offer in hw_offers:
                 if not valid_offer(offer, seen_jobs):
                     continue
                         
                 score, _ = calculate_match_score(offer, pure_keywords)
-                if score >= 20: 
+                if score >= MATCH_TITLES_SCORE: 
                     if offer['company'] in SCHOOL_NAME:
                             print(f"   [Filtre] Écarté (Entreprise écartée) : {offer['title']} chez {offer['company']}")
                             continue
@@ -157,8 +168,10 @@ def main():
                     
                     final_score, final_keywords = calculate_match_score(offer, pure_keywords)
                     
-                    if final_score >= 30: 
+                    if final_score >= SUPER_MATCH_THRESHOLD: 
                         matches_count += 1
+                        bot_stats["HelloWork"]["pertinentes"] += 1
+                        
                         print(f"\n🔥 SUPER MATCH HELLOWORK ({final_score} pts) : {offer['title']}")
                         print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
                         print(f"   ⏳ Durée estimée : {duration}")
@@ -174,6 +187,7 @@ def main():
         # ------------------------------------------------
         print("\n▶️ PLATEFORME 2 : LA BONNE ALTERNANCE")
         lba_offers = search_lba()
+        bot_stats["LaBonneAlternance"]["scannées"] += len(lba_offers)
         
         for offer in lba_offers:
             if not valid_offer(offer, seen_jobs):
@@ -184,6 +198,8 @@ def main():
             
             if final_score >= SUPER_MATCH_THRESHOLD:
                 matches_count += 1
+                bot_stats["LaBonneAlternance"]["pertinentes"] += 1
+                
                 print(f"\n🔥 SUPER MATCH LBA ({final_score} pts) : {offer['title']}")
                 print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
                 print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
@@ -201,6 +217,7 @@ def main():
         for query in LINKEDIN_QUERIES:
             print(f"   └── 🌐 Recherche LinkedIn : {query}")
             linkedin_offers = search_linkedin(driver, query)
+            bot_stats["LinkedIn"]["scannées"] += len(linkedin_offers)
             
             for offer in linkedin_offers:
                 if not valid_offer(offer, seen_jobs):
@@ -208,7 +225,7 @@ def main():
                 # 1er check de base
                 score, _ = calculate_match_score(offer, pure_keywords)
                 
-                if score >= 20: 
+                if score >= MATCH_TITLES_SCORE: 
                     
                     print(f"   [Deep Scan] Analyse de : {offer['title'][:60]}... chez {offer['company']}")
                     
@@ -224,6 +241,8 @@ def main():
                     
                     if final_score >= SUPER_MATCH_THRESHOLD: 
                         matches_count += 1
+                        bot_stats["LinkedIn"]["pertinentes"] += 1
+                        
                         print(f"\n🔥 SUPER MATCH LINKEDIN ({final_score} pts) : {offer['title']}")
                         print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
                         print(f"   ⏳ Durée estimée : {duration}")
@@ -241,6 +260,7 @@ def main():
         for query in WTTJ_QUERIES:
             print(f"   └── 🌐 Recherche WTTJ : {query}")
             wttj_offers = search_wttj(driver, query)
+            bot_stats["WTTJ"]["scannées"] += len(wttj_offers)
             
             for offer in wttj_offers:
                 if not valid_offer(offer, seen_jobs):
@@ -248,7 +268,7 @@ def main():
                     
                 score, _ = calculate_match_score(offer, pure_keywords)
                 
-                if score >= 20: 
+                if score >= MATCH_TITLES_SCORE: 
                     
                     print(f"   [Deep Scan] Analyse de : {offer['title'][:60]}... chez {offer['company']}")
                     
@@ -263,6 +283,8 @@ def main():
                     
                     if final_score >= SUPER_MATCH_THRESHOLD: 
                         matches_count += 1
+                        bot_stats["WTTJ"]["pertinentes"] += 1
+                        
                         print(f"\n🔥 SUPER MATCH WTTJ ({final_score} pts) : {offer['title']}")
                         print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
                         print(f"   ⏳ Durée estimée : {duration}")
@@ -280,6 +302,7 @@ def main():
         for query in APEC_QUERIES:
             print(f"   └── 🌐 Recherche APEC : {query}")
             apec_offers = search_apec(driver, query) 
+            bot_stats["APEC"]["scannées"] += len(apec_offers)
             
             for offer in apec_offers:
                 if not valid_offer(offer, seen_jobs):
@@ -301,6 +324,8 @@ def main():
                     
                     if final_score >= SUPER_MATCH_THRESHOLD: 
                         matches_count += 1
+                        bot_stats["APEC"]["pertinentes"] += 1
+                        
                         print(f"\n🔥 SUPER MATCH APEC ({final_score} pts) : {offer['title']}")
                         print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
                         print(f"   ⏳ Durée estimée : {duration}")
@@ -316,12 +341,27 @@ def main():
         print(f"⚠️ Erreur lors du scraping : {e}")
             
     finally:
-        print("\n   └── 🛑 Fermeture de l'instance Chrome.")
-        driver.quit()
+        
+        print("="*50)
+        print(f"🏁 TERMINÉ. {matches_count} offres hautement pertinentes trouvées au total.")
+        print("="*50)
+        
+        # Génération du graphique de stats
+        # 1. On génère l'image et on récupère son nom
+        image_filename = generate_stats_graph(bot_stats)
+        
+        # 2. On calcule le total pour le petit texte Discord
+        total_scans = sum(plateforme["scannées"] for plateforme in bot_stats.values())
+        
+        # 3. On envoie sur Discord (vérifie que DISCORD_WEBHOOK contient bien ton URL)
+        if total_scans > 0:
+            send_discord_report(DISCORD_WEBHOOK, image_filename, total_scans, matches_count)
+                    
+        if driver:
+            print("   └── 🛑 Fermeture de l'instance Chrome.")
+            driver.quit()
 
-    print("==================================================")
-    print(f"🏁 TERMINÉ. {matches_count} offres hautement pertinentes trouvées au total.")
-    print("==================================================")
+   
 
 if __name__ == "__main__":
     main()
