@@ -31,7 +31,7 @@ def send_discord_report(webhook_url, image_path, total_scannees, total_pertinent
     except Exception as e:
         print(f"   [Erreur] Impossible d'envoyer l'image sur Discord : {e}")
         
-def send_discord_alert(webhook_url, title, company, location, date, score, keywords, link):
+def send_discord_alert(webhook_url, title, company, location, date, score, keywords, link, duration):
     if not webhook_url:
         return
         
@@ -43,6 +43,7 @@ def send_discord_alert(webhook_url, title, company, location, date, score, keywo
             {"name": "🏢 Entreprise", "value": company, "inline": True},
             {"name": "📍 Localisation", "value": location, "inline": True},
             {"name": "🕒 Publié", "value": date, "inline": True},
+            {"name": "⏳ Durée estimée", "value": duration, "inline": True},
             {"name": "⭐ Score", "value": f"{score} pts", "inline": True},
             {"name": "🔑 Compétences", "value": ", ".join(keywords).title(), "inline": False}
         ],

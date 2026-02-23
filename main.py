@@ -177,7 +177,7 @@ def main():
                         print(f"   ⏳ Durée estimée : {duration}")
                         print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
                         print(f"   🔗 {offer['link']}\n")
-                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'])
+                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'], duration)
                 
                 save_seen_job(offer['link'])
                 seen_jobs.add(offer['link'])
@@ -204,7 +204,7 @@ def main():
                 print(f"   🏢 {offer['company']} | 📍 {offer['location']} | 🕒 {offer.get('date', 'Récent')}")
                 print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
                 print(f"   🔗 {offer['link']}\n")
-                send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'])
+                send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'], "Durée non précisée")
             
             save_seen_job(offer['link'])
             seen_jobs.add(offer['link'])
@@ -248,7 +248,7 @@ def main():
                         print(f"   ⏳ Durée estimée : {duration}")
                         print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
                         print(f"   🔗 {offer['link']}\n")
-                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'])
+                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'], duration)
                 
                 save_seen_job(offer['link'])
                 seen_jobs.add(offer['link'])  
@@ -290,7 +290,7 @@ def main():
                         print(f"   ⏳ Durée estimée : {duration}")
                         print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
                         print(f"   🔗 {offer['link']}\n")
-                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'])
+                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], offer.get('date', 'Récent'), final_score, final_keywords, offer['link'], duration)
                 
                 save_seen_job(offer['link'])
                 seen_jobs.add(offer['link'])
@@ -331,7 +331,7 @@ def main():
                         print(f"   ⏳ Durée estimée : {duration}")
                         print(f"   🔑 Mots-clés : {', '.join(final_keywords).title()}")
                         print(f"   🔗 {offer['link']}\n")
-                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], duration, final_score, final_keywords, offer['link'])
+                        send_discord_alert(DISCORD_WEBHOOK, offer['title'], offer['company'], offer['location'], duration, final_score, final_keywords, offer['link'], duration)
                 else:
                     print(f"   [Filtre] Offre écartée (Score trop bas : {score} pts) : {offer['title'][:40]}...")
 
@@ -342,9 +342,13 @@ def main():
             
     finally:
         
-        print("="*50)
+        if driver:
+            print("   └── 🛑 Fermeture de l'instance Chrome.")
+            driver.quit()
+        
+        print("="*80)
         print(f"🏁 TERMINÉ. {matches_count} offres hautement pertinentes trouvées au total.")
-        print("="*50)
+        print("="*80)
         
         # Génération du graphique de stats
         # 1. On génère l'image et on récupère son nom
@@ -353,13 +357,11 @@ def main():
         # 2. On calcule le total pour le petit texte Discord
         total_scans = sum(plateforme["scannées"] for plateforme in bot_stats.values())
         
-        # 3. On envoie sur Discord (vérifie que DISCORD_WEBHOOK contient bien ton URL)
+        # 3. On envoie sur Discord 
         if total_scans > 0:
             send_discord_report(DISCORD_WEBHOOK, image_filename, total_scans, matches_count)
                     
-        if driver:
-            print("   └── 🛑 Fermeture de l'instance Chrome.")
-            driver.quit()
+        
 
    
 
