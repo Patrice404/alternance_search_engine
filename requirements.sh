@@ -1,0 +1,1 @@
+apt install python3 python3-bs4 python3-selenium chromium-chromedriver python3-requests python3-matplotlib

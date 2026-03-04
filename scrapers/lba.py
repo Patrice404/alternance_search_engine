@@ -7,7 +7,6 @@ def search_lba(max_days_old=7):
     params = {
         "romes": "M1806,M1802,M1801,M1810,M1844,M1883",
         "diploma": "7 (Master, titre ingénieur...)",
-        "radius": 100,
         "caller": "bot_alternance_patrice"
     }
     
