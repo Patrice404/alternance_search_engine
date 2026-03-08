@@ -76,16 +76,14 @@ def search_linkedin(driver, query="Alternance Cybersécurité", max_scrolls=LINK
                 if not title:
                     continue
 
-                # NOUVEAU FILTRE STRICT : On vérifie que c'est bien une alternance
+                # On vérifie que c'est bien une alternance
                 title_lower = title.lower()
                 
-                # Si AUCUN de ces mots n'est dans le titre, on jette l'offre directement
                 if not any(word in title_lower for word in ALTERNANCE_KEYWORDS):
                     print(f"   [Filtre] Écarté (Pas une alternance) : {title[:40]}...")
                     continue
                 
                 try:
-                    # Utilisation de get_attribute("innerText") au lieu de .text
                     title_elem = card.find_element(By.CSS_SELECTOR, "h3.base-search-card__title")
                     title = title_elem.get_attribute("innerText").strip()
                     
@@ -113,7 +111,6 @@ def search_linkedin(driver, query="Alternance Cybersécurité", max_scrolls=LINK
                     except:
                         date_posted = "Récent"
 
-                    # Si le titre est complètement vide (parfois LinkedIn met des cartes pubs invisibles)
                     if not title:
                         continue
 
