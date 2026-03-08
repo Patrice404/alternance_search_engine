@@ -1,4 +1,4 @@
-DISCORD_WEBHOOK = "https://discordapp.com/api/webhooks/1475437606589431921/8Pw8340waFtDMuMQQSHnl7bZoFY0GOrrhnCPDS20-9EW7T5AZDA-0KmE_B_eZwc3CoRd"
+DISCORD_WEBHOOK = ""
 
 SCHOOL_NAME = ["e2se", "school", "academy", "2i", "ecole", "campus", "ekod", "école", "livecampus","mydigitalSchool","ironhack","openClassrooms","iris","cesi","coda","studi","institut","carrevolutis", "sup de vinci", "nexa digital school", "institut f2i"]
 ALTERNANCE_KEYWORDS = ["apprentice", "apprenticeship","alt","[alternance]","[alternant(e)]","[alternant]","alternant(e)","alternante","alternant","alternance", "apprenti", "apprentissage", "pro", "professionnalisation"]
