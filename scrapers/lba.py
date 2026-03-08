@@ -59,7 +59,6 @@ def search_lba(max_days_old=7):
                         
                         days_ago = (today - datetime.strptime(creation_date[:10], '%Y-%m-%d')).days
                         
-                        # On fusionne tout en texte pour la recherche de mots-clés
                         full_text = f"{title} {company} {location} {description_text} {rome_details}"
                         
                         offers.append({
@@ -98,7 +97,6 @@ def search_lba(max_days_old=7):
                         
                         days_ago = (today - datetime.strptime(creation_date[:10], '%Y-%m-%d')).days
                         
-                        # On fusionne tout en texte pour la recherche de mots-clés
                         full_text = f"{title} {company} {location} {description_text}"
 
                         offers.append({
