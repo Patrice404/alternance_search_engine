@@ -40,14 +40,13 @@ def search_hellowork(driver, query="Alternance système réseau cybersécurité"
     
     all_offers = []
     
-    # Boucle de pagination : de la page 1 à la page max_pages
     for page in range(1, max_pages + 1):
         url = f"https://www.hellowork.com/fr-fr/emploi/recherche.html?k={safe_query}&l=France&c=Alternance&cod=1-2y&d={date_filter}&p={page}"
         print(f"   └── 🌐 Scan HelloWork - Page {page} : {url}")
 
         try:
             driver.get(url)
-            time.sleep(5) # On attend le chargement
+            time.sleep(5) 
             
             # On ne clique sur la bannière cookie que sur la première page
             if page == 1:
@@ -110,7 +109,7 @@ def search_hellowork(driver, query="Alternance système réseau cybersécurité"
 
         except Exception as e:
             print(f"⚠️ Erreur lors du scraping de la page {page} : {e}")
-            break # On arrête la boucle en cas de gros crash
+            break 
 
     print(f"   └── ✅ Bilan HelloWork : {len(all_offers)} offres collectées au total.")
     return all_offers
