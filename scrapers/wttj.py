@@ -33,15 +33,13 @@ def search_wttj(driver, query="Cybersécurité", max_pages=MAX_PAGES):
     
     print("   └── 🌐 Scan de Welcome to the Jungle (Alternance & France)...")
 
-    # Boucle de pagination grâce à ton URL !
     for page in range(1, max_pages + 1):
-        # L'URL exacte que tu as trouvée, avec l'injection du numéro de page
         url = f"https://www.welcometothejungle.com/fr/jobs?query={safe_query}&sortBy=mostRecent&refinementList%5Boffices.country_code%5D%5B%5D=FR&refinementList%5Bcontract_type%5D%5B%5D=apprenticeship&page={page}"
         print(f"      └── Page {page} : {url}")
 
         try:
             driver.get(url)
-            time.sleep(5) # WTTJ est très lourd à charger
+            time.sleep(5) 
 
             # Gérer les cookies uniquement sur la première page
             if page == 1:
