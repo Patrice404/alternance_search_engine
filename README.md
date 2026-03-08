@@ -36,8 +36,8 @@ cd alternance_search_engine
 ```
 ### 2. Installation automatique (Script Bash)
 ```bash
-chmod +x install.sh
-./install.sh
+chmod +x requirements.sh
+./requirements.sh
 ```
 
 ### 3. Configuration
